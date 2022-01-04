@@ -2,4 +2,10 @@
 node_modules/
 cache/info.json
 dist/
+.yarn/*
 .yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

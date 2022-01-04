@@ -60,7 +60,7 @@ class DiscordClient {
 	clearActivity() {
 		if (!this.ready) return;
 
-		this.client.clearActivity().catch(() => this.client.destroy());
+		this.client.clearActivity();
 	}
 
 	destroyClient() {

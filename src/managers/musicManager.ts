@@ -34,7 +34,7 @@ export default class MusicManager {
 					year = props.year ? ` (${props.year})` : "",
 					activity: Presence = {
 						details: props.name,
-						state: `${props.artist} — ${props.album}${year}`,
+						state: `by ${props.artist} on ${props.album}${year}`,
 						endTimestamp,
 						largeImageKey: infos.artwork,
 						largeImageText: `${props.album}${year}`
@@ -51,12 +51,12 @@ export default class MusicManager {
 
 				this.#currentSong.album = props.album;
 				this.#currentSong.artist = props.artist;
-				this.#currentSong.title = props.name;
 				this.#currentSong.state =
 					~["added", "playing"].indexOf(this.#currentSong?.state) &&
 					this.#currentSong.title === props.name
 						? "playing"
 						: "added";
+				this.#currentSong.title = props.name;
 				this.#currentSong.duration = props.duration;
 
 				return setActivity(activity, this.#currentSong);
