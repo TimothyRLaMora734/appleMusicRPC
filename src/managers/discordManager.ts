@@ -25,6 +25,9 @@ class DiscordClient {
 		this.client.on("ready", () => {
 			this.ready = true;
 			this.setActivity();
+			logger.extend("service").extend("discordManager").extend("client")(
+				`Logged in as ${this.client.user.username}#${this.client.user.discriminator}`
+			);
 		});
 
 		this.client.on(
@@ -34,9 +37,7 @@ class DiscordClient {
 				this.destroyClient();
 				rpcClient = undefined!;
 				clearInterval(vars.loopTimer);
-				vars.loopTimer = setInterval(() => {
-					initApp();
-				}, 5000);
+				vars.loopTimer = setInterval(() => initApp(), 1000);
 				this.loginClient();
 			}
 		);
@@ -75,7 +76,7 @@ export const setActivity = (presenceData: Presence, song: Song) => {
 
 		if (song.state === "playing") return;
 
-		logger.extend("discordManager").extend("setActivity")(
+		logger.extend("service").extend("discordManager").extend("setActivity")(
 			`Now playing; ${song.artist} - ${song.title}. Duration: ${formatTime(
 				song.duration as number
 			)}`

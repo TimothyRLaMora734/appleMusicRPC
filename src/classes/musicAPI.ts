@@ -15,8 +15,8 @@ export default class MusicAPI {
 	}
 
 	public async search(props: iTunesProps): Promise<iTunesInfo> {
-		const { id, artist, name } = props;
-		let infos = this.cache.get(id);
+		const { id, artist, name } = props,
+			infos = this.cache.get(id);
 		if (typeof infos !== "undefined") return infos;
 
 		const options = new ItunesSearchOptions({

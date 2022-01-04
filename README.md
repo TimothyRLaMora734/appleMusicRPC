@@ -20,7 +20,7 @@ Run `yarn build` inside cloned repo, then run `yarn start` to start RPC.
 Open `sleequid.am-rpc.plist` and replace these lines:
 
 - `/absolute/path/to/repo` with the absolute path to cloned repo on your macOS.
-- `/absolute/path/to/node` with the absolute path to index.js (inside `dist` folder) on your macOS.
+- `/absolute/path/to/node` with the absolute path to node (`which node`).
 
 Move `sleequid.am-rpc.plist` to `~/Library/LaunchAgents/`.
 
@@ -28,7 +28,7 @@ Run `launchctl load ~/Library/LaunchAgents/sleequid.am-rpc.plist`.
 
 ## How to remove from autostart
 
-```
+```code
 launchctl unload ~/Library/LaunchAgents/sleequid.am-rpc.plist
 rm ~/Library/LaunchAgents/sleequid.am-rpc.plist
 ```

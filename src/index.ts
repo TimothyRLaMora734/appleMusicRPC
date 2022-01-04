@@ -13,20 +13,18 @@ const showFiglet = async () => {
 		console.log(textSync("Apple Music Discord RPC"));
 	},
 	start = async () => {
-		debug.enable("appleMusicRPC*");
+		if (process.env.DEBUG) debug.enable("appleMusicRPC*");
+		else debug.enable("appleMusicRPC:service*");
 		showFiglet();
 		initApp();
 	};
 
 export const initApp = async () => {
-	logger.extend("rpcLoop")("Starting RPC loop");
+	logger.extend("service").extend("rpcLoop")("Starting RPC loop");
 
 	const am = new MusicManager();
 
-	am.rpcLoop();
-	vars.loopTimer = setInterval(() => {
-		am.rpcLoop();
-	}, 5000);
+	vars.loopTimer = setInterval(() => am.rpcLoop(), 1000);
 };
 
 start();
