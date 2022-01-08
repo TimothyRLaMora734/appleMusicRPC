@@ -15,18 +15,16 @@ Discord Rich Presence for Apple Music (macOS)!
 
 Run `yarn build` inside cloned repo, then run `yarn start` to start RPC.
 
-## Autostart
+## Daemon
 
-Open `sleequid.am-rpc.plist` and replace these lines:
+```code
+chmod +x install.sh
+./install.sh
+```
 
-- `/absolute/path/to/repo` with the absolute path to cloned repo on your macOS.
-- `/absolute/path/to/node` with the absolute path to node (`which node`).
+This script will install the daemon and start it automatically.
 
-Move `sleequid.am-rpc.plist` to `~/Library/LaunchAgents/`.
-
-Run `launchctl load ~/Library/LaunchAgents/sleequid.am-rpc.plist`.
-
-## How to remove from autostart
+## How to remove daemon
 
 ```code
 launchctl unload ~/Library/LaunchAgents/sleequid.am-rpc.plist
