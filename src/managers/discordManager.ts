@@ -11,34 +11,39 @@ export let rpcClient: DiscordClient;
 
 class DiscordClient {
 	clientId: string;
-	private client: Client;
-	private ready = false;
+	#client: Client;
+	#ready = false;
 	actualPresence!: Presence;
 
 	constructor() {
 		rpcClient = this;
 		this.clientId = APP_ID;
-		this.client = new Client({
+		this.#client = new Client({
 			transport: "ipc"
 		});
 
-		this.client.on("ready", () => {
-			this.ready = true;
+		this.#client.on("ready", () => {
+			this.#ready = true;
 			this.setActivity();
 			logger.extend("service").extend("discordManager").extend("client")(
-				`Logged in as ${this.client.user.username}#${this.client.user.discriminator}`
+				`Logged in as ${this.#client.user.username}#${
+					this.#client.user.discriminator
+				}`
 			);
 		});
 
-		this.client.on(
-			// @ts-ignore
+		this.#client.on(
+			// @ts-expect-error: This type doesn't exist.
 			"disconnected",
-			() => {
-				this.destroyClient();
-				rpcClient = undefined!;
-				clearInterval(vars.loopTimer);
-				vars.loopTimer = setInterval(() => initApp(), 1000);
-				this.loginClient();
+			(err: any) => {
+				console.log(err);
+				setTimeout(() => {
+					this.destroyClient();
+					rpcClient = undefined!;
+					clearInterval(vars.loopTimer);
+					vars.loopTimer = setInterval(() => initApp(), 1000);
+					this.loginClient();
+				}, 1000);
 			}
 		);
 
@@ -46,28 +51,28 @@ class DiscordClient {
 	}
 
 	loginClient() {
-		this.client
+		this.#client
 			.login({ clientId: this.clientId })
 			.catch(err => console.error(err));
 	}
 
 	setActivity(data?: Presence) {
 		data = data ? data : this.actualPresence;
-		if (!this.ready) return;
+		if (!this.#ready) return;
 
-		this.client.setActivity(data).catch(() => this.client.destroy());
+		this.#client.setActivity(data);
 	}
 
 	clearActivity() {
-		if (!this.ready) return;
+		if (!this.#ready) return;
 
-		this.client.clearActivity();
+		this.#client.clearActivity();
 	}
 
 	destroyClient() {
-		if (!this.ready) return;
+		if (!this.#ready) return;
 
-		this.client.destroy();
+		this.#client.destroy();
 	}
 }
 
