@@ -1,4 +1,5 @@
 import debug from "debug";
+import { config } from "dotenv";
 import { textSync } from "figlet";
 
 import MusicManager from "@managers/musicManager";
@@ -16,7 +17,11 @@ const showFiglet = async () => {
 		if (process.env.DEBUG) debug.enable("appleMusicRPC*");
 		else debug.enable("appleMusicRPC:service*");
 		showFiglet();
+		loadEnv();
 		initApp();
+	},
+	loadEnv = async () => {
+		config({ path: "./.env" });
 	};
 
 export const initApp = async () => {

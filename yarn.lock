@@ -121,6 +121,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^14.17.1":
+  version: 14.18.5
+  resolution: "@types/node@npm:14.18.5"
+  checksum: 5ad7090e4cd1d7cd9efa4915cc8b4f69503a1d2070b1998a55fce776ae03fef6c0703d6940197af2cd31b3516b41b552d9fced92d2a0837c28b8ed8b5ca0872c
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^17.0.5":
   version: 17.0.5
   resolution: "@types/node@npm:17.0.5"
@@ -192,8 +199,11 @@ __metadata:
     "@types/discord-rpc": ^4.0.0
     "@types/figlet": ^1.5.4
     "@types/node": ^17.0.5
+    axios: ^0.24.0
     debug: ^4.3.3
+    detritus-client-socket: ^0.8.3
     discord-rpc: ^4.0.1
+    dotenv: ^11.0.0
     figlet: ^1.5.2
     node-itunes-search: ^1.2.2
     tsc-alias: ^1.5.0
@@ -222,6 +232,15 @@ __metadata:
   version: 2.1.0
   resolution: "array-union@npm:2.1.0"
   checksum: 5bee12395cba82da674931df6d0fea23c4aa4660cb3b338ced9f828782a65caa232573e6bf3968f23e0c5eb301764a382cef2f128b170a9dc59de0e36c39f98d
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.24.0":
+  version: 0.24.0
+  resolution: "axios@npm:0.24.0"
+  dependencies:
+    follow-redirects: ^1.14.4
+  checksum: 468cf496c08a6aadfb7e699bebdac02851e3043d4e7d282350804ea8900e30d368daa6e3cd4ab83b8ddb5a3b1e17a5a21ada13fc9cebd27b74828f47a4236316
   languageName: node
   linkType: hard
 
@@ -389,6 +408,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"detritus-client-socket@npm:^0.8.3":
+  version: 0.8.3
+  resolution: "detritus-client-socket@npm:0.8.3"
+  dependencies:
+    "@types/node": ^14.17.1
+    detritus-utils: ^0.4.0
+    ws: ^7.4.6
+  peerDependencies:
+    erlpack: ^0.1.3
+    libsodium-wrappers: ^0.7.8
+    pako: ^1.0.11
+    sodium: ^3.0.2
+    tweetnacl: ^1.0.3
+    uws: 10.148.1
+  peerDependenciesMeta:
+    erlpack:
+      optional: true
+    libsodium-wrappers:
+      optional: true
+    pako:
+      optional: true
+    sodium:
+      optional: true
+    tweetnacl:
+      optional: true
+    uws:
+      optional: true
+  checksum: f9bd747e5ba4efddf0b0698634f87e056c752c672e2475ce5426704682ccc133493b69e4ad9eb323d11619a369ad316b40e8449af60393bf315e23d4e2bfdcf4
+  languageName: node
+  linkType: hard
+
+"detritus-utils@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "detritus-utils@npm:0.4.0"
+  peerDependencies:
+    eventemitter3: ^4.0.7
+  peerDependenciesMeta:
+    eventemitter3:
+      optional: true
+  checksum: c76cc0afd923c0f56a307cd2497e4244b59bbfa2b7184b980a72bdb2c2d87e2c5f5bbf12404d531cd77c1d99361fe894b48abd0d52b5ffda2a48575d2db29962
+  languageName: node
+  linkType: hard
+
 "dir-glob@npm:^3.0.1":
   version: 3.0.1
   resolution: "dir-glob@npm:3.0.1"
@@ -409,6 +471,13 @@ __metadata:
     register-scheme:
       optional: true
   checksum: f96e4e32751402c9a689b24eccfa319315995f8906bb86e167c6a94bc6466f3641b41f8a082ac5b4e92baa7cefdb3456e7c4d86ccd2d9373281c9a93b7335c56
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "dotenv@npm:11.0.0"
+  checksum: 48df9e85ea1d41b3096afc1990b9b1bd966deb6c9e056cd43f14e755f3ef1e5d477c3b05afc7ca651e31320c26a9b7dc375bc3313777352c51e6a2f539ea1ffc
   languageName: node
   linkType: hard
 
@@ -515,6 +584,16 @@ __metadata:
     micromatch: ^4.0.2
     resolve-dir: ^1.0.1
   checksum: 94131e1107ad63790ed00c4c39ca131a93ea602607bd97afeffd92b69a9a63cf2c6f57d6db88cb753fe748ac7fde79e1e76768ff784247026b7c5ebf23ede3a0
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.4":
+  version: 1.14.7
+  resolution: "follow-redirects@npm:1.14.7"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: f6d03e5e30877431065bca0d1b2e3db93949eb799d368a5c07ea8a4b71205f0349a3f8f0191bf13a07c93885522834dca1dc8e527dc99a772c6911fba24edc5f
   languageName: node
   linkType: hard
 
@@ -1496,7 +1575,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^7.3.1":
+"ws@npm:^7.3.1, ws@npm:^7.4.6":
   version: 7.5.6
   resolution: "ws@npm:7.5.6"
   peerDependencies:

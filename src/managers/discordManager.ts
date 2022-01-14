@@ -1,82 +1,15 @@
-import { Client, Presence } from "discord-rpc";
+import axios from "axios";
+import { PresenceOptions } from "detritus-client-socket/lib/gateway";
+import { Presence } from "discord-rpc";
 
 import Song from "@classes/Song";
-import { iTunesProps } from "@interfaces/iTunes";
+import { DiscordRPCManager, rpcVars } from "@managers/discord/rpcManager";
+import { DiscordSocketManager, socketVars } from "@managers/discord/socketManager";
 import { formatTime } from "@util/formatTime";
 
 import { APP_ID, logger } from "../config";
-import { initApp, vars } from "../index";
 
-export let rpcClient: DiscordClient;
-
-class DiscordClient {
-	clientId: string;
-	#client: Client;
-	#ready = false;
-	actualPresence!: Presence;
-
-	constructor() {
-		rpcClient = this;
-		this.clientId = APP_ID;
-		this.#client = new Client({
-			transport: "ipc"
-		});
-
-		this.#client.on("ready", () => {
-			this.#ready = true;
-			this.setActivity();
-			logger.extend("service").extend("discordManager").extend("client")(
-				`Logged in as ${this.#client.user.username}#${
-					this.#client.user.discriminator
-				}`
-			);
-		});
-
-		this.#client.on(
-			// @ts-expect-error: This type doesn't exist.
-			"disconnected",
-			(err: any) => {
-				console.log(err);
-				setTimeout(() => {
-					this.destroyClient();
-					rpcClient = undefined!;
-					clearInterval(vars.loopTimer);
-					vars.loopTimer = setInterval(() => initApp(), 1000);
-					this.loginClient();
-				}, 1000);
-			}
-		);
-
-		this.loginClient();
-	}
-
-	loginClient() {
-		this.#client
-			.login({ clientId: this.clientId })
-			.catch(err => console.error(err));
-	}
-
-	setActivity(data?: Presence) {
-		data = data ? data : this.actualPresence;
-		if (!this.#ready) return;
-
-		this.#client.setActivity(data);
-	}
-
-	clearActivity() {
-		if (!this.#ready) return;
-
-		this.#client.clearActivity();
-	}
-
-	destroyClient() {
-		if (!this.#ready) return;
-
-		this.#client.destroy();
-	}
-}
-
-export const setActivity = (presenceData: Presence, song: Song) => {
+export const setActivity = async (presenceData: Presence, song: Song) => {
 		if (!presenceData) return clearActivity();
 
 		if (song.state === "playing") return;
@@ -87,16 +20,64 @@ export const setActivity = (presenceData: Presence, song: Song) => {
 			)}`
 		);
 
-		if (!rpcClient) {
-			rpcClient = new DiscordClient();
-			rpcClient.actualPresence = presenceData;
-		} else rpcClient.setActivity(presenceData);
+		if (!process.env.discord_token) {
+			if (!rpcVars.rpcClient) {
+				rpcVars.rpcClient = new DiscordRPCManager();
+				rpcVars.rpcClient.actualPresence = presenceData;
+			} else rpcVars.rpcClient.setActivity(presenceData);
+		} else {
+			const res = await axios.post(
+				`https://discord.com/api/v9/applications/${APP_ID}/external-assets`,
+				{
+					urls: [presenceData.largeImageKey]
+				},
+				{
+					headers: {
+						Authorization: process.env.discord_token
+					}
+				}
+			);
+
+			const presence: PresenceOptions = {
+				activities: [
+					{
+						name: "Apple Music",
+						type: 2,
+						details: presenceData.details,
+						state: presenceData.state,
+						assets: {
+							largeImage: `mp:${res.data[0].external_asset_path}`,
+							largeText: presenceData.largeImageText
+						},
+						timestamps: {
+							start: Date.now(),
+							end: presenceData.endTimestamp as number
+						}
+					}
+				]
+			};
+
+			if (!socketVars.socketClient) {
+				socketVars.socketClient = new DiscordSocketManager();
+				socketVars.socketClient.setActivity(presence);
+			} else socketVars.socketClient.setActivity(presence);
+		}
 	},
 	clearActivity = () => {
-		if (!rpcClient) return;
-		rpcClient.clearActivity();
+		if (!process.env.discord_token) {
+			if (!rpcVars.rpcClient) return;
+			rpcVars.rpcClient.clearActivity();
+		} else {
+			if (!socketVars.socketClient) return;
+			socketVars.socketClient.clearActivity();
+		}
 	},
 	destroyClient = () => {
-		if (!rpcClient) return;
-		rpcClient.destroyClient();
+		if (!process.env.discord_token) {
+			if (!rpcVars.rpcClient) return;
+			rpcVars.rpcClient.destroyClient();
+		} else {
+			if (!socketVars.socketClient) return;
+			socketVars.socketClient.destroyClient();
+		}
 	};

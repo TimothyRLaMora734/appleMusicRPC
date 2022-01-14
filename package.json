@@ -15,7 +15,10 @@
 	},
 	"dependencies": {
 		"@jxa/run": "^1.3.4",
+		"axios": "^0.24.0",
+		"detritus-client-socket": "^0.8.3",
 		"discord-rpc": "^4.0.1",
+		"dotenv": "^11.0.0",
 		"figlet": "^1.5.2",
 		"node-itunes-search": "^1.2.2"
 	},
