@@ -43,7 +43,7 @@ export default class MusicManager {
 				if (infos.url) {
 					activity.buttons = [
 						{
-							label: "Listen on Apple Music",
+							label: "Play on Apple Music",
 							url: infos.url
 						}
 					];
