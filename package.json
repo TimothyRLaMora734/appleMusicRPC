@@ -4,7 +4,7 @@
 	"description": "Discord RPC for Apple Music.",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/sleequid/appleMusicRPC.git"
+		"url": "git://github.com/ririxidev/appleMusicRPC.git"
 	},
 	"license": "GPL-3.0",
 	"author": "ririxidev <mail@ririxi.dev>",
